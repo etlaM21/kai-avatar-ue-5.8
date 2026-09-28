@@ -1,0 +1,18 @@
+[
+	{
+		"file": "K:\\KaiTracking\\Source\\KaiTracking\\KaiTracking.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+			"@K:\\KaiTracking\\.vscode\\compileCommands_KaiTracking\\KaiTracking.0.rsp"
+		],
+		"directory": "D:\\programs\\EpicGames\\UE_5.8\\Engine\\Source"
+	},
+	{
+		"file": "K:\\KaiTracking\\Source\\KaiTracking\\Private\\MyClass.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+			"@K:\\KaiTracking\\.vscode\\compileCommands_KaiTracking\\KaiTracking.0.rsp"
+		],
+		"directory": "D:\\programs\\EpicGames\\UE_5.8\\Engine\\Source"
+	}
+]

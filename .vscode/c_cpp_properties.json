@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "KaiTrackingEditor Editor Win64 Development (KaiTracking)",
+            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "msvc-x64",
+            "compileCommands": [
+                "K:\\KaiTracking\\.vscode\\compileCommands_KaiTracking.json"
+            ]
+        },
+        {
+            "name": "Win32",
+            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "msvc-x64",
+            "compileCommands": [
+                "K:\\KaiTracking\\.vscode\\compileCommands_Default.json"
+            ]
+        }
+    ],
+    "version": 4
+}
