@@ -97,7 +97,7 @@ FText UMediaPipeLiveLinkSourceFactory::GetSourceDisplayName() const
 
 FText UMediaPipeLiveLinkSourceFactory::GetSourceTooltip() const
 {
-	return LOCTEXT("SourceTooltip", "Receive MediaPipe skeletal pose streaming via UDP JSON");
+	return LOCTEXT("SourceTooltip", "Receive Kai pose streams over OSC on localhost (/kai/pose/<Subject>), one Live Link subject per sender");
 }
 
 TSharedPtr<SWidget> UMediaPipeLiveLinkSourceFactory::BuildCreationPanel(FOnLiveLinkSourceCreated OnLiveLinkSourceCreated) const

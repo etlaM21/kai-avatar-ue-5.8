@@ -4,7 +4,22 @@
 #include "Roles/LiveLinkAnimationRole.h"
 #include "OSCManager.h"
 
-const FName FMediaPipeLiveLinkSource::DefaultSubjectName(TEXT("MediaPipePose"));
+const TCHAR* const FMediaPipeLiveLinkSource::SourceTypeName = TEXT("MediaPipe OSC");
+
+// One Live Link subject per sender, named by the OSC address: /kai/pose/<Subject>.
+// Each lane streams to its own subject, so both can send at the same time and the
+// AnimBP picks or mixes them. Any other /kai/pose/<Name> gets its own subject on its
+// first packet, so a new lane needs no change here.
+static const FString PoseAddressPrefix(TEXT("/kai/pose/"));
+
+// The two lanes' subjects are registered as soon as the source starts, not only on
+// their first packet, so they show up in the Live Link window and in the AnimBP's
+// subject picker before Python sends anything (a subject without frames shows yellow).
+// Must match live_link\subjects.py in kai-avatar-animation.
+static const TArray<FName> KnownSubjectNames = {
+    TEXT("Kai_LiveTracking"),   // webcam lane (conductor.py)
+    TEXT("Kai_ProceduralGen"),  // generated-motion lane (Kimodo player)
+};
 
 // Indices 0-21: Manny's body, unchanged. Indices 22-59: 19 finger bones per
 // hand (a metacarpal + 3 phalanges for index/middle/ring/pinky, 3 phalanges
@@ -75,6 +90,11 @@ void FMediaPipeLiveLinkSource::ReceiveClient(ILiveLinkClient* InClient, FGuid In
     // Bind the OSC receive event directly to our parse function
     OSCServer->OnOscMessageReceivedNative.AddRaw(this, &FMediaPipeLiveLinkSource::OnOSCMessageReceived);
     OSCServer->Listen();
+
+    for (const FName& SubjectName : KnownSubjectNames)
+    {
+        CreateSubject(SubjectName);
+    }
 }
 
 bool FMediaPipeLiveLinkSource::RequestSourceShutdown()
@@ -112,9 +132,20 @@ void FMediaPipeLiveLinkSource::CreateSubject(const FName& InSubjectName)
 
 void FMediaPipeLiveLinkSource::OnOSCMessageReceived(const FOSCMessage& Message, const FString& IPAddress, uint16 Port)
 {
-    if (!Client || Message.GetAddress().GetFullPath() != TEXT("/mediapipe/pose")) return;
+    if (!Client) return;
 
-    CreateSubject(DefaultSubjectName);
+    // The senders (conductor.py, the procedural player) always run on this machine;
+    // nothing from the network may move the character.
+    FIPv4Address SenderAddress;
+    if (!FIPv4Address::Parse(IPAddress, SenderAddress) || !SenderAddress.IsLoopbackAddress()) return;
+
+    const FString Path = Message.GetAddress().GetFullPath();
+    if (!Path.StartsWith(PoseAddressPrefix, ESearchCase::CaseSensitive)) return;
+    const FString SubjectString = Path.RightChop(PoseAddressPrefix.Len());
+    if (SubjectString.IsEmpty() || SubjectString.Contains(TEXT("/"))) return;
+    const FName SubjectName(*SubjectString);
+
+    CreateSubject(SubjectName);
 
     TArray<float> Args;
     UOSCManager::GetAllFloats(Message, Args);
@@ -147,5 +178,5 @@ void FMediaPipeLiveLinkSource::OnOSCMessageReceived(const FOSCMessage& Message, 
         ArgIndex += 7;
     }
 
-    Client->PushSubjectFrameData_AnyThread({ SourceGuid, DefaultSubjectName }, MoveTemp(FrameDataStruct));
+    Client->PushSubjectFrameData_AnyThread({ SourceGuid, SubjectName }, MoveTemp(FrameDataStruct));
 }

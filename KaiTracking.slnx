@@ -10,14 +10,14 @@
     <Platform Name="Win64-arm64ec" />
   </Configurations>
   <Folder Name="/Engine/">
-    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="beae44e6-e679-32e6-a3c3-66badac27443">
+    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="b4eae86b-0624-34d7-a55a-fb190623b4d9">
       <BuildType Project="BuiltWithUnrealBuildTool" />
       <Platform Project="Win64" />
       <Build Project="false" />
     </Project>
   </Folder>
   <Folder Name="/Games/">
-    <Project Path="Intermediate/ProjectFiles/KaiTracking.vcxproj" Id="bde328d5-9920-3d4b-8509-f0754baf9e3c">
+    <Project Path="Intermediate/ProjectFiles/KaiTracking.vcxproj" Id="019f7cf4-1e39-3b1b-84db-5a445990e487">
       <BuildType Solution="DebugGame Editor|Win64" Project="DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64" Project="Win64_arm64_DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64ec" Project="Win64_arm64ec_DebugGame_Editor" />
